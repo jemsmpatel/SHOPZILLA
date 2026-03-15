@@ -8,7 +8,7 @@ function AdminSettings() {
       title: "Change Password",
       description: "Update your admin password",
       icon: <Lock size={20} />,
-      path: "/admin/change-password",
+      path: "/admin/settings/change-password",
     },
   ];
 

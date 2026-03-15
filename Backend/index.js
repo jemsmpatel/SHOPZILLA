@@ -27,7 +27,7 @@ connectDB()
 const app = express()
 
 app.use(cors({
-    origin: ["http://localhost:3000", "http://192.168.43.147:3000"], // ya 3000 (tumhara frontend port)
+    origin: ["http://localhost:3000", "http://10.196.119.181:3000"], // ya 3000 (tumhara frontend port)
     credentials: true
 }));
 
@@ -64,4 +64,4 @@ if (process.env.NODE_ENV === 'production') {
     });
 }
 
-app.listen(PORT, ["192.168.43.147", "127.0.0.1"], () => console.log(`server is running on port ${PORT}`));
+app.listen(PORT, ["10.196.119.181", "127.0.0.1"], () => console.log(`server is running on port ${PORT}`));

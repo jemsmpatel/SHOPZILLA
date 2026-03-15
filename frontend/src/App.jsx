@@ -55,6 +55,8 @@ import AdminChangePassword from "./admin/AdminChangePassword";
 import AdminForgotPassword from "./admin/AdminForgotPassword";
 import AdminResetPassword from "./admin/AdminResetPassword";
 import SearchPage from "./pages/SearchPage";
+import AdminSellers from "./admin/AdminSellers";
+import AdminSellerDetail from "./admin/AdminSellerDetail";
 
 function App() {
   return (
@@ -145,11 +147,13 @@ function App() {
             <Route path="/admin/category/add" element={<AddCategory />} />
             <Route path="/admin/category/edit/:id" element={<EditCategory />} />
             <Route path="/admin/users" element={<AdminUsers />} />
+            <Route path="/admin/sellers" element={<AdminSellers />} />
+            <Route path="/admin/seller/:id" element={<AdminSellerDetail />} />
             <Route path="/admin/admins" element={<AdminAdmins />} />
             <Route path="/admin/orders" element={<AdminOrdersPage />} />
             <Route path="/admin/settings" element={<AdminSettings />} />
             <Route
-              path="/admin/change-password"
+              path="/admin/settings/change-password"
               element={<AdminChangePassword />}
             />
           </Route>

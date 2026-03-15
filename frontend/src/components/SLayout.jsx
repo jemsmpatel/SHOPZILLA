@@ -142,10 +142,9 @@ const NavItem = ({ icon, label, to, isOpen }) => (
   <NavLink
     to={to}
     className={({ isActive }) =>
-      `flex items-center gap-4 px-4 py-3 rounded-xl transition-all ${
-        isActive
-          ? "bg-orange-500 text-white shadow-lg shadow-orange-200"
-          : "text-gray-500 hover:bg-orange-50 hover:text-orange-500"
+      `flex items-center gap-4 px-4 py-3 rounded-xl transition-all ${isActive
+        ? "bg-orange-500 text-white shadow-lg shadow-orange-200"
+        : "text-gray-500 hover:bg-orange-50 hover:text-orange-500"
       }`
     }
   >
