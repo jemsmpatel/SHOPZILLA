@@ -65,8 +65,8 @@ if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '/frontend/build')));
 
     // Any route that is not an API route will be redirected to index.html
-    app.get('/*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
+    app.use((req, res) => {
+        res.sendFile(path.resolve(__dirname, '../frontend/build/index.html'));
     });
 }
 
