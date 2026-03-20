@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import asyncHandler from "../middlewares/asyncHandler.js";
 import createAdminToken from "../utils/createAdminToken.js";
 import Admin from "../models/Admin.js";
-import User from "../models/user.js";
+import User from "../models/User.js";
 import Seller from "../models/Seller.js";
 import Product from "../models/Product.js";
 import Category from "../models/Category.js";
