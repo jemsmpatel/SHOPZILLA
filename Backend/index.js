@@ -20,7 +20,7 @@ import adminuserRoutes from './routes/adminuserRoutes.js';
 import adminproductRouter from './routes/adminproductRouter.js';
 import adminorderRoutes from './routes/adminorderRoutes.js';
 
-// __dirname fix (ESM)
+// __dirname fix
 import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,7 +28,6 @@ const __dirname = path.dirname(__filename);
 // config
 dotenv.config();
 
-// app init
 const app = express();
 
 // middlewares
@@ -40,44 +39,42 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// DB + server start
+// API routes
+app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/sellers', sellerRoutes);
+app.use('/api/v1/products', productsRoutes);
+app.use('/api/v1/cart', cartRoutes);
+app.use('/api/v1/category', categoryRoutes);
+app.use('/api/v1/media', mediaRouters);
+app.use('/api/v1/order', orderRoutes);
+app.use('/api/v1/admin', adminRoutes);
+app.use('/api/v1/admin/seller', adminsellerRoutes);
+app.use('/api/v1/admin/user', adminuserRoutes);
+app.use('/api/v1/admin/products', adminproductRouter);
+app.use('/api/v1/admin/orders', adminorderRoutes);
+
+// 🔥 Serve frontend (ONLY ONCE)
+app.use(express.static(path.join(__dirname, '../frontend/build')));
+
+// fallback (IMPORTANT)
+app.use((req, res, next) => {
+    if (req.path.startsWith('/api')) {
+        return res.status(404).json({ message: "API route not found" });
+    }
+    res.sendFile(path.resolve(__dirname, '../frontend/build/index.html'));
+});
+
+// start server safely
 const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
     try {
         await connectDB();
-
-        // API routes
-        app.use('/api/v1/users', userRoutes);
-        app.use('/api/v1/sellers', sellerRoutes);
-        app.use('/api/v1/products', productsRoutes);
-        app.use('/api/v1/cart', cartRoutes);
-        app.use('/api/v1/category', categoryRoutes);
-        app.use('/api/v1/media', mediaRouters);
-        app.use('/api/v1/order', orderRoutes);
-        app.use('/api/v1/admin', adminRoutes);
-        app.use('/api/v1/admin/seller', adminsellerRoutes);
-        app.use('/api/v1/admin/user', adminuserRoutes);
-        app.use('/api/v1/admin/products', adminproductRouter);
-        app.use('/api/v1/admin/orders', adminorderRoutes);
-
-        // 🔥 Serve React frontend
-        app.use(express.static(path.join(__dirname, '../frontend/build')));
-
-        // ⚠️ IMPORTANT fallback (fixes Unexpected token <)
-        app.use((req, res, next) => {
-            if (req.path.startsWith('/api')) {
-                return res.status(404).json({ message: "API route not found" });
-            }
-            res.sendFile(path.resolve(__dirname, '../frontend/build/index.html'));
-        });
-
         app.listen(PORT, () => {
-            console.log(`🚀 Server running on port ${PORT}`);
+            console.log(`🚀 Server running on ${PORT}`);
         });
-
-    } catch (error) {
-        console.error("❌ Server failed:", error.message);
+    } catch (err) {
+        console.error("❌ Server failed:", err.message);
     }
 };
 
