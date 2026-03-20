@@ -20,6 +20,12 @@ import adminproductRouter from './routes/adminproductRouter.js';
 import adminorderRoutes from './routes/adminorderRoutes.js';
 import cors from "cors";
 
+
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // configuration
 dotenv.config()
 connectDB()
@@ -56,11 +62,11 @@ app.use('/api/v1/admin/orders', adminorderRoutes);
 // Serve frontend in production
 if (process.env.NODE_ENV === 'production') {
     // Set static folder
-    app.use(express.static(path.join(__dirname, '/frontend/dist')));
+    app.use(express.static(path.join(__dirname, '../frontend/build')));
 
     // Any route that is not an API route will be redirected to index.html
     app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'));
+        res.sendFile(path.resolve(__dirname, '../frontend/build/index.html'));
     });
 }
 
