@@ -185,6 +185,14 @@ export const admin = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["Products"],
         }),
+        adminproductupdate: builder.mutation({
+            query: ({ id, data }) => ({
+                url: `${Admin_URL}/products/${id}`,
+                method: "POST",
+                body: data,
+            }),
+            invalidatesTags: ["Products"],
+        }),
     }),
 });
 
@@ -220,4 +228,5 @@ export const {
     useAdminResetPasswordMutation,
     useAdminChangePasswordMutation,
     useAdminproductcreateMutation,
+    useAdminproductupdateMutation,
 } = admin;

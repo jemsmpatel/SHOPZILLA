@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import {
   useGetSpecificProductQuery,
-  useUpdateProductMutation,
 } from "../redux/api/products";
 import { toast } from "react-toastify";
 import { useUploadMediaMutation } from "../redux/api/seller";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetallcategoryQuery } from "../redux/api/Category";
+import { useAdminproductupdateMutation } from "../redux/api/admin";
 
 function AdminUpdateProduct() {
   const [formData, setFormData] = useState({
@@ -28,7 +28,7 @@ function AdminUpdateProduct() {
   const { id } = useParams();
   const { data: productData, isLoading: productLoading } =
     useGetSpecificProductQuery(id);
-  const [updateProduct, { isLoading }] = useUpdateProductMutation();
+  const [updateProduct, { isLoading }] = useAdminproductupdateMutation();
   const { data: response } = useGetallcategoryQuery("tree=true&active=true");
   const { sellerInfo } = useSelector((state) => state.sellerAuth);
   const [isJsonMode, setIsJsonMode] = useState(false);
@@ -289,7 +289,7 @@ function AdminUpdateProduct() {
     } catch (error) {
       console.error(error);
 
-      toast.error("Product Update Failed ❌");
+      toast.error(error?.data?.message || "Product Update Failed ❌");
     }
   };
 
@@ -469,18 +469,78 @@ function AdminUpdateProduct() {
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-600 mb-2">
-                Tax (%)
+              <label className="flex items-center gap-2 text-sm font-semibold text-gray-600 mb-2">
+                GST (%)
+
+                {/* Info Icon */}
+                <div className="relative group cursor-pointer">
+                  <span className="text-blue-500 text-xs border border-blue-500 rounded-full px-2 py-0.5">
+                    i
+                  </span>
+
+                  {/* Tooltip */}
+                  <div className="absolute left-0 top-6 z-50 hidden group-hover:block w-80 bg-black text-white text-xs rounded-lg p-3 shadow-lg">
+                    <p className="font-semibold mb-1">GST Guide (India):</p>
+
+                    <ul className="space-y-1">
+                      {/* Clothing */}
+                      <li>👕 <b>Clothing:</b></li>
+                      <li>• ≤ ₹2500 → 5% (Shirts, T-shirts, Jeans)</li>
+                      <li>• &gt; ₹2500 → 18% (Jackets, Designer wear)</li>
+
+                      {/* 0% */}
+                      <li className="mt-2">🟢 <b>0% GST (Essential)</b></li>
+                      <li>• Fresh fruits, vegetables</li>
+                      <li>• Milk, eggs</li>
+
+                      {/* 5% */}
+                      <li className="mt-2">🟡 <b>5% GST</b></li>
+                      <li>• Footwear (≤ ₹1000)</li>
+                      <li>• Packaged food items</li>
+                      <li>• Household essentials</li>
+
+                      {/* 12% */}
+                      <li className="mt-2">🟠 <b>12% GST</b></li>
+                      <li>• Processed foods</li>
+                      <li>• Butter, cheese</li>
+
+                      {/* 18% */}
+                      <li className="mt-2">🔵 <b>18% GST (Most common)</b></li>
+                      <li>• Mobiles, laptops</li>
+                      <li>• Electronics, accessories</li>
+                      <li>• Clothing &gt; ₹2500</li>
+
+                      {/* 28% */}
+                      <li className="mt-2">🔴 <b>28% GST (Luxury)</b></li>
+                      <li>• Luxury items</li>
+                      <li>• High-end watches</li>
+                      <li>• Premium products</li>
+
+                      {/* Tip */}
+                      <li className="mt-2 text-yellow-300">
+                        • If unsure → select 18%
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </label>
-              <input
-                type="number"
+
+              <select
                 className="w-full sm:p-4 p-2 bg-gray-50 border-2 border-gray-200 rounded-xl focus:border-orange-500 outline-none"
                 value={formData.tax}
                 onChange={(e) =>
-                  setFormData({ ...formData, tax: e.target.value })
+                  setFormData({ ...formData, tax: Number(e.target.value) })
                 }
                 required
-              />
+              >
+                <option value="">Select GST Rate</option>
+
+                <option value={0}>0% (Essential items)</option>
+                <option value={5}>5% (Household goods / Clothing ≤ ₹2500)</option>
+                <option value={12}>12% (Processed goods)</option>
+                <option value={18}>18% (Most products / Clothing &gt; ₹2500)</option>
+                <option value={28}>28% (Luxury items)</option>
+              </select>
             </div>
           </div>
 

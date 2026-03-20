@@ -128,9 +128,13 @@ const admincreateProduct = asyncHandler(async (req, res) => {
     }
 
     // ✅ Price validation
-    if (price > mrp_price) {
+    if (Number(price) > Number(mrp_price)) {
         res.status(400);
         throw new Error("Selling price cannot be greater than MRP");
+    }
+
+    if (mrp_price <= 0 || price <= 0) {
+        throw new Error("Price must be greater than 0");
     }
 
     // ✅ Calculate discount automatically
@@ -168,4 +172,97 @@ const admincreateProduct = asyncHandler(async (req, res) => {
     });
 });
 
-export { getAllProduct, toggleProductStatus, deleteProduct, admincreateProduct };
+const updateSpesificProduct = asyncHandler(async (req, res) => {
+
+    const productId = req.params.id;
+
+    if (!productId.match(/^[0-9a-fA-F]{24}$/)) {
+        res.status(400);
+        throw new Error("Invalid product ID");
+    }
+
+    const product = await Product.findById(productId);
+
+    if (!product) {
+        res.status(404);
+        throw new Error("Product not found");
+    }
+
+    const {
+        name,
+        description,
+        mrp_price,
+        price,
+        category_id,
+        stock,
+        sku,
+        tax,
+        brand,
+        images
+    } = req.body;
+
+    // ✅ Price validation
+    if (Number(price) > Number(mrp_price)) {
+        res.status(400);
+        throw new Error("Selling price cannot be greater than MRP");
+    }
+
+    if (mrp_price <= 0 || price <= 0) {
+        throw new Error("Price must be greater than 0");
+    }
+
+    // ✅ SKU unique check (exclude current product)
+    if (sku) {
+        const skuExists = await Product.findOne({
+            sku,
+            _id: { $ne: productId }
+        });
+
+        if (skuExists) {
+            res.status(400);
+            throw new Error("Product with this SKU already exists");
+        }
+    }
+
+    // ✅ Calculate discount automatically
+    let discount_rate = product.discount_rate;
+
+    const finalPrice = price ?? product.price;
+    const finalMrp = mrp_price ?? product.mrp_price;
+
+    if (finalMrp && finalPrice) {
+        discount_rate = Math.round(
+            ((finalMrp - finalPrice) / finalMrp) * 100
+        );
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+        productId,
+        {
+            name: name ?? product.name,
+            description: description ?? product.description,
+            mrp_price: finalMrp,
+            price: finalPrice,
+            discount_rate,
+            category_id: category_id ?? product.category_id,
+            stock: stock ?? product.stock,
+            sku: sku ?? product.sku,
+            tax: tax ?? product.tax,
+            brand: brand ?? product.brand,
+            images: images ?? product.images
+        },
+        {
+            new: true,
+            runValidators: true
+        }
+    );
+
+    res.status(200).json({
+        success: true,
+        message: "Product updated successfully",
+        product: updatedProduct,
+    });
+
+});
+
+export { getAllProduct, toggleProductStatus, deleteProduct, admincreateProduct, updateSpesificProduct };

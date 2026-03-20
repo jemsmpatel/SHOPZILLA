@@ -1,12 +1,9 @@
 import React, { useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Star, Edit, Trash2, Power, Package } from "lucide-react";
-import {
-  useDeleteProductMutation,
-  useGetSpecificProductQuery,
-  useToggleProductStatusMutation,
-} from "../redux/api/products";
+import { useGetSpecificProductQuery } from "../redux/api/products";
 import { toast } from "react-toastify";
+import { useDeleteProductMutation, useToggleProductStatusMutation } from "../redux/api/admin";
 
 function AdminProductDetailsPage() {
   const { id } = useParams();
@@ -72,11 +69,10 @@ function AdminProductDetailsPage() {
                   <div
                     key={idx}
                     onClick={() => setSelectedImage(idx)}
-                    className={`w-16 h-20 border-2 cursor-pointer rounded overflow-hidden ${
-                      selectedImage === idx
+                    className={`w-16 h-20 border-2 cursor-pointer rounded overflow-hidden ${selectedImage === idx
                         ? "border-blue-600"
                         : "border-gray-200"
-                    }`}
+                      }`}
                   >
                     <img
                       src={img}
@@ -143,11 +139,10 @@ function AdminProductDetailsPage() {
 
                 <div>
                   <span
-                    className={`px-3 py-1 rounded text-xs font-bold ${
-                      product?.isActive
+                    className={`px-3 py-1 rounded text-xs font-bold ${product?.isActive
                         ? "bg-green-100 text-green-700"
                         : "bg-red-100 text-red-700"
-                    }`}
+                      }`}
                   >
                     {product?.isActive === null
                       ? "Null"
@@ -192,11 +187,10 @@ function AdminProductDetailsPage() {
 
                 <button
                   onClick={handleToggleProducte}
-                  className={`flex items-center gap-2 px-5 py-3 rounded font-semibold ${
-                    product?.isActive
+                  className={`flex items-center gap-2 px-5 py-3 rounded font-semibold ${product?.isActive
                       ? "bg-gray-700 hover:bg-gray-800 text-white"
                       : "bg-green-600 hover:bg-green-700 text-white"
-                  }`}
+                    }`}
                 >
                   <Power size={18} />
                   {ToggleProduct_isLoading

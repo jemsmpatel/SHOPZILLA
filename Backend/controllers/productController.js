@@ -1,6 +1,8 @@
 import asyncHandler from "../middlewares/asyncHandler.js";
 import Product from "../models/Product.js";
 import OrderItem from "../models/OrderItem.js";
+import Category from "../models/Category.js";
+import mongoose from "mongoose";
 
 const createProduct = asyncHandler(async (req, res) => {
     const {
@@ -36,15 +38,14 @@ const createProduct = asyncHandler(async (req, res) => {
     }
 
     // ✅ Price validation
-    if (price > mrp_price) {
+    if (Number(price) > Number(mrp_price)) {
         res.status(400);
         throw new Error("Selling price cannot be greater than MRP");
     }
 
-    // ✅ Calculate discount automatically
-    const discount_rate = Math.round(
-        ((mrp_price - price) / mrp_price) * 100
-    );
+    if (mrp_price <= 0 || price <= 0) {
+        throw new Error("Price must be greater than 0");
+    }
 
     // ✅ SKU must be unique
     const productExists = await Product.findOne({ sku });
@@ -130,9 +131,13 @@ const updateSpesificProduct = asyncHandler(async (req, res) => {
     } = req.body;
 
     // ✅ Price validation
-    if (price && mrp_price && price > mrp_price) {
+    if (Number(price) > Number(mrp_price)) {
         res.status(400);
         throw new Error("Selling price cannot be greater than MRP");
+    }
+
+    if (mrp_price <= 0 || price <= 0) {
+        throw new Error("Price must be greater than 0");
     }
 
     // ✅ SKU unique check (exclude current product)
@@ -249,19 +254,18 @@ const deleteProduct = asyncHandler(async (req, res) => {
 });
 
 const getAllProduct = asyncHandler(async (req, res) => {
-
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 10;
     const skip = (page - 1) * limit;
 
-    const type = req.query.type; // section type
+    const type = req.query.type;
 
     // 🔎 Search
     const keyword = req.query.keyword
         ? {
             $or: [
                 { name: { $regex: req.query.keyword, $options: "i" } },
-                { brand: { $regex: req.query.keyword, $options: "i" } }
+                { brand: { $regex: req.query.keyword, $options: "i" } },
             ],
         }
         : {};
@@ -269,9 +273,39 @@ const getAllProduct = asyncHandler(async (req, res) => {
     // 🎯 Base Filter
     const filter = {
         ...keyword,
-        ...(req.query.category_id && { category_id: req.query.category_id }),
-        ...(req.query.isActive && { isActive: req.query.isActive === "true" }),
+        ...(req.query.isActive && {
+            isActive: req.query.isActive === "true",
+        }),
     };
+
+    // ✅ CATEGORY + SUBCATEGORY LOGIC
+    if (req.query.category_id) {
+        const categoryId = new mongoose.Types.ObjectId(
+            req.query.category_id
+        );
+
+        // recursive function
+        const getSubCategories = async (parentId) => {
+            const children = await Category.find({
+                parent_id: parentId,
+            }).select("_id");
+
+            let ids = children.map((c) => c._id);
+
+            for (let child of children) {
+                const subIds = await getSubCategories(child._id);
+                ids = ids.concat(subIds);
+            }
+
+            return ids;
+        };
+
+        const subCategoryIds = await getSubCategories(categoryId);
+
+        filter.category_id = {
+            $in: [categoryId, ...subCategoryIds],
+        };
+    }
 
     // 🔃 Default Sorting
     let sortBy = { createdAt: -1 };
@@ -316,7 +350,6 @@ const getAllProduct = asyncHandler(async (req, res) => {
         totalPages: Math.ceil(totalProducts / limit),
         products,
     });
-
 });
 
 const getSellerAllProducts = asyncHandler(async (req, res) => {
