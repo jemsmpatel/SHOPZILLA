@@ -112,7 +112,7 @@ const rejectSeller = asyncHandler(async (req, res) => {
   await seller.save();
 
   // 🔗 Frontend Edit Link
-  const editLink = `${process.env.REACT_APP_API_URL}/seller/retry/${token}`;
+  const editLink = `${process.env.REACT_APP_API_URL}seller/retry/${token}`;
 
   // EMAIL SEND (SAFE BLOCK)
   try {

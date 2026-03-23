@@ -102,7 +102,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
   await seller.save();
 
   // Reset link
-  const resetUrl = `${process.env.REACT_APP_API_URL}/seller/reset-password/${resetToken}`;
+  const resetUrl = `${process.env.REACT_APP_API_URL}seller/reset-password/${resetToken}`;
 
   const sendSmtpEmail = {
     to: [

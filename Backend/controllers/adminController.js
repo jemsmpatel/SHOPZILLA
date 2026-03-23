@@ -83,7 +83,7 @@ const adminForgotPassword = asyncHandler(async (req, res) => {
 
     await admin.save();
 
-    const resetUrl = `${process.env.REACT_APP_API_URL}/admin/reset-password/${resetToken}`;
+    const resetUrl = `${process.env.REACT_APP_API_URL}admin/reset-password/${resetToken}`;
 
     const sendSmtpEmail = {
         to: [{ email: admin.email }],
