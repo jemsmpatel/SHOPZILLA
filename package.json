@@ -1,0 +1,20 @@
+{
+  "name": "sem-6",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "frontend": "npm start --prefix frontend",
+    "seed:admin": "node backend/seed/superAdminSeed.js",
+    "backend": "npm start --prefix backend",
+    "fullstack": "concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "concurrently": "^9.2.1",
+    "slugify": "^1.6.6"
+  }
+}

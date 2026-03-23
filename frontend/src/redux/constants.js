@@ -1,0 +1,9 @@
+export const BASE_URL = "";
+export const USER_URL = '/users';
+export const SELLER_URL = '/sellers';
+export const Admin_URL = '/admin';
+export const PRODUCT_URL = '/products';
+export const MEDIA_URL = '/media';
+export const CART_URL = '/cart';
+export const ORDER_URL = '/order';
+export const Category_URL = '/category';

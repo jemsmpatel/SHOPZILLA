@@ -1,0 +1,132 @@
+products routes
+
+create review
+update
+delete
+get product all review
+get reviews by user id all reviews in all products
+
+
+image all routes
+
+
+order all routes
+
+
+admin all routes
+
+
+
+
+
+
+
+
+SUPER_ADMIN
+
+✅ Kya kar sakta hai
+
+✔ Admin / Staff create, update, delete
+
+✔ Roles assign / change
+
+✔ Kisi bhi admin ko activate / deactivate
+
+✔ All sellers manage
+
+✔ All products manage
+
+✔ All orders manage
+
+✔ Payments / refunds
+
+✔ Reports & analytics
+
+✔ System settings
+
+✔ GST, commission, categories
+
+✔ Database-level actions (soft delete)
+
+❌ Restrictions
+
+❌ None (except law 😄)
+
+📌 Real example: CTO, Tech Lead, Founder
+
+
+🥈 ADMIN (Operations / Manager)
+
+Daily business handle karta hai
+
+✅ Kya kar sakta hai
+
+✔ Sellers approve / reject
+
+✔ Products approve / block
+
+✔ Orders view & update status
+
+✔ Returns & refunds process
+
+✔ Support tickets handle
+
+✔ Reports view (read-only)
+
+✔ Staff create & manage (optional)
+
+❌ Kya nahi kar sakta
+
+❌ SUPER_ADMIN create nahi kar sakta
+
+❌ System settings change nahi kar sakta
+
+❌ Dusre admins ko role assign nahi kar sakta
+
+❌ Commission / GST change nahi kar sakta
+
+📌 Real example: Operations Manager
+
+🥉 STAFF (Limited access 👷)
+
+Support / verification ka kaam
+
+✅ Kya kar sakta hai
+
+✔ Sellers data view
+
+✔ Orders view
+
+✔ KYC verify (approve / reject flags)
+
+✔ Support tickets reply
+
+✔ Profile update
+
+❌ Kya nahi kar sakta
+
+❌ Seller create/delete
+
+❌ Product approve
+
+❌ Refund process
+
+❌ Admin create/update
+
+❌ System data change
+
+📌 Real example: Customer Support, KYC team
+
+
+
+
+get all seller :- Admin
+seller Acesspte request :- Staff
+
+get all user :- Admin
+
+get all Products :- Staff
+get spesific product ( Enable dessable ) :- Staff
+
+
+
