@@ -25,4 +25,4 @@ Thumbs.db
 .idea/
 
 # my changes
-backend/index.js
+Backend/index.js
