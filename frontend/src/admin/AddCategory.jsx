@@ -198,7 +198,7 @@ function AddCategory() {
         <input type="file" accept="image/*" onChange={handleImage} />
 
         {imagePreview && (
-          <img src={imagePreview} className="w-32 h-32 object-cover rounded" />
+          <img src={imagePreview} alt={formData.name || "Category preview"} className="w-32 h-32 object-cover rounded" />
         )}
 
         {/* STATUS */}

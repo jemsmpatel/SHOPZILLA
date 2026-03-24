@@ -156,6 +156,7 @@ function Banner({ title, img }) {
     <div className="relative rounded-xl overflow-hidden group cursor-pointer">
       <img
         src={img}
+        alt={`Banner for ${title}`}
         className="h-60 w-full object-cover group-hover:scale-110 transition duration-500"
       />
 

@@ -86,14 +86,39 @@ function AdminChangePassword() {
             required
           />
 
-          <input
-            type={showPassword ? "text" : "password"}
-            placeholder="New Password"
-            className="w-full px-4 py-3 bg-gray-100 rounded-xl"
-            value={password}
-            onChange={(e) => handlePasswordChange(e.target.value)}
-            required
-          />
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="New Password"
+              className="w-full px-4 py-3 bg-gray-100 rounded-xl"
+              value={password}
+              onChange={(e) => handlePasswordChange(e.target.value)}
+              required
+            />
+
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-3 text-sm text-gray-600"
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
+          </div>
+
+          <p className="text-sm">
+            Strength:{" "}
+            <span
+              className={
+                passwordStrength === "Strong"
+                  ? "text-green-600"
+                  : passwordStrength === "Medium"
+                    ? "text-yellow-600"
+                    : "text-red-600"
+              }
+            >
+              {passwordStrength}
+            </span>
+          </p>
 
           <input
             type="password"

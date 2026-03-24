@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { ShoppingBag } from "lucide-react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   useGetSellerByRetryTokenQuery,
-  useSellerRegisterMutation,
   useUpdateRejectedSellerMutation,
   useUploadMediaMutation,
 } from "../redux/api/seller";
@@ -62,7 +61,6 @@ const RejectedSellerUpdate = () => {
   const [shopCities, setShopCities] = useState([]);
   const [passwordStrength, setPasswordStrength] = useState("");
   const [originalData, setOriginalData] = useState({});
-  const [showPassword, setShowPassword] = useState(false);
 
   const { data, isLoading: isLoadingData } =
     useGetSellerByRetryTokenQuery(token);
@@ -728,13 +726,12 @@ const RejectedSellerUpdate = () => {
 
               {passwordStrength && (
                 <p
-                  className={`text-sm mt-1 font-semibold ${
-                    passwordStrength === "Strong"
+                  className={`text-sm mt-1 font-semibold ${passwordStrength === "Strong"
                       ? "text-green-600"
                       : passwordStrength === "Medium"
                         ? "text-yellow-600"
                         : "text-red-600"
-                  }`}
+                    }`}
                 >
                   Password Strength: {passwordStrength}
                 </p>

@@ -4,7 +4,6 @@ import {
   Mail,
   Package,
   Star,
-  Heart,
   ChevronRight,
   LogOut,
 } from "lucide-react";
@@ -130,9 +129,10 @@ function Profile() {
             <div className="flex gap-4 mt-8">
               <button
                 onClick={handleSave}
-                className="flex-1 py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-2xl shadow"
+                disabled={isLoading}
+                className="flex-1 py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-2xl shadow disabled:bg-gray-400"
               >
-                Save
+                {isLoading ? "Saving..." : "Save"}
               </button>
 
               <button

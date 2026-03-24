@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import slugify from "slugify";
@@ -18,7 +18,9 @@ function EditCategory() {
   const { data } = useGetCategoryByIdQuery(id);
   const { data: catData } = useGetallcategoryQuery("tree=true");
 
-  const categories = Array.isArray(catData?.data) ? catData.data : [];
+  const categories = useMemo(() => {
+    return Array.isArray(catData?.data) ? catData.data : [];
+  }, [catData]);
 
   const [updateCategory, { isLoading }] = useUpdateCategoryMutation();
   const [uploadMedia, { isLoading: mediaIsLoading }] = useUploadMediaMutation();
@@ -158,9 +160,9 @@ function EditCategory() {
   // SUB CATEGORY LIST
   // -----------------------
 
-  const selectedParentCategory = categories.find(
-    (cat) => cat._id === selectedParent,
-  );
+  const selectedParentCategory = useMemo(() => {
+    return categories.find((cat) => cat._id === selectedParent);
+  }, [categories, selectedParent]);
 
   const subCategories = selectedParentCategory?.subCategories || [];
 
@@ -248,7 +250,7 @@ function EditCategory() {
         <input type="file" accept="image/*" onChange={handleImage} />
 
         {imagePreview && (
-          <img src={imagePreview} className="w-32 h-32 object-cover rounded" />
+          <img src={imagePreview} alt={formData.name || "Category image"} className="w-32 h-32 object-cover rounded" />
         )}
 
         {/* STATUS */}

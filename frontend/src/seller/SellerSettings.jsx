@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Lock, User, Settings } from "lucide-react";
+import { Lock, Settings } from "lucide-react";
 
 function SellerSettings() {
   const settingsLinks = [

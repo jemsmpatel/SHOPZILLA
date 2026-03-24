@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 const Slider = () => {
   const slides = [
@@ -9,26 +9,26 @@ const Slider = () => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const prevSlide = () => {
-    const isFirstSlide = currentIndex === 0;
-    const newIndex = isFirstSlide ? slides.length - 1 : currentIndex - 1;
-    setCurrentIndex(newIndex);
-  };
+  const prevSlide = useCallback(() => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? slides.length - 1 : prevIndex - 1
+    );
+  }, [slides.length]);
 
-  const nextSlide = () => {
-    const isLastSlide = currentIndex === slides.length - 1;
-    const newIndex = isLastSlide ? 0 : currentIndex + 1;
-    setCurrentIndex(newIndex);
-  };
+  const nextSlide = useCallback(() => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === slides.length - 1 ? 0 : prevIndex + 1
+    );
+  }, [slides.length]);
 
   // --- Auto-play Logic (3 Seconds) ---
   useEffect(() => {
     const slideInterval = setInterval(() => {
       nextSlide();
-    }, 3000); // 3000ms = 3 seconds
+    }, 3000);
 
-    return () => clearInterval(slideInterval); // Memory leak se bachne ke liye cleanup
-  }, [currentIndex]);
+    return () => clearInterval(slideInterval);
+  }, [nextSlide]);
 
   return (
     // Height ko thoda kam kiya hai taaki screen par perfect dikhe (h-[450px])

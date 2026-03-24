@@ -5,7 +5,6 @@ import {
   ShoppingBag,
   Users,
   Settings,
-  BarChart3,
   LogOut,
   Menu,
   X,

@@ -91,7 +91,7 @@ function App() {
         />
         <Route
           path="/seller/reset-password/:token"
-          element={<AdminResetPassword />}
+          element={<SellerResetPassword />}
         />
         <Route element={<SellerPrivateRoute />}>
           <Route element={<SLayout />}>
