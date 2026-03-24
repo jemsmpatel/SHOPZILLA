@@ -188,7 +188,7 @@ export const admin = apiSlice.injectEndpoints({
         adminproductupdate: builder.mutation({
             query: ({ id, data }) => ({
                 url: `${Admin_URL}/products/${id}`,
-                method: "POST",
+                method: "PUT",
                 body: data,
             }),
             invalidatesTags: ["Products"],
