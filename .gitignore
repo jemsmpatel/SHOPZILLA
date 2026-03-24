@@ -23,3 +23,6 @@ Thumbs.db
 # IDE / Editor files
 .vscode/
 .idea/
+
+# my changes
+backend/index.js
